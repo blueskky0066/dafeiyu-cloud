@@ -1,0 +1,250 @@
+{
+  "enabled": true,
+  "dryRun": false,
+  "setupDone": true,
+  "botQQ": "YOUR_BOT_QQ",
+  "ownerQQ": "YOUR_QQ",
+  "ownerName": "Kira",
+  "ownerLevel": "full",
+  "profilePerms": {
+    "qqNickname": "owner",
+    "qqSignature": "owner",
+    "qqAvatar": "owner",
+    "biliSign": "owner",
+    "biliAvatar": "owner"
+  },
+  "longTasks": false,
+  "allow": {
+    "private": [],
+    "groups": [
+      "YOUR_GROUP_ID"
+    ]
+  },
+  "ignoreQQ": [
+    "111111111",
+    "222222222"
+  ],
+  "snowluma": {
+    "dir": "/nonexistent-snowluma",
+    "autoStart": false,
+    "webuiPort": 5099,
+    "webuiPassword": "",
+    "passwordAuto": false,
+    "autoAttach": false,
+    "httpUrl": "http://127.0.0.1:3000",
+    "wsUrl": "ws://127.0.0.1:3001",
+    "httpToken": "",
+    "wsToken": ""
+  },
+  "model": {
+    "provider": "",
+    "model": "",
+    "reasoningEffort": "low"
+  },
+  "merge": {
+    "enabled": true,
+    "waitSec": 2.5,
+    "maxSec": 8,
+    "groupWaitSec": 5,
+    "groupMaxSec": 15
+  },
+  "imageGen": {
+    "enabled": false,
+    "provider": "openai",
+    "baseUrl": "",
+    "apiKey": "",
+    "model": "",
+    "size": "1024x1024",
+    "stylePrompt": "",
+    "ownerOnly": true
+  },
+  "persona": {
+    "current": "dafeiyu"
+  },
+  "group": {
+    "wakeWords": [
+      "大肥鱼",
+      "肥鱼"
+    ],
+    "interjectChance": 0.15,
+    "cooldownSec": 90,
+    "maxPerHour": 6,
+    "quietHours": [
+      1,
+      8
+    ],
+    "minRecentMessages": 3,
+    "activeWindowSec": 300,
+    "interests": [
+      "白米饭",
+      "米饭",
+      "吃饭",
+      "好吃",
+      "饿了",
+      "游戏",
+      "追剧",
+      "番剧",
+      "动漫",
+      "猫",
+      "狗",
+      "鲸鱼",
+      "鱼",
+      "睡觉",
+      "熬夜",
+      "困",
+      "天气",
+      "下雨",
+      "表情包",
+      "女仆",
+      "可爱",
+      "奶茶",
+      "甜品"
+    ],
+    "minRelevance": 0.25,
+    "burstMax": 8,
+    "burstWindowSec": 120,
+    "overrides": {
+      "YOUR_GROUP_ID": {
+        "interjectChance": 1,
+        "minRelevance": 0,
+        "cooldownSec": 0,
+        "maxPerHour": 120,
+        "minRecentMessages": 1,
+        "quietHours": [],
+        "burstMax": 50,
+        "burstWindowSec": 60
+      }
+    }
+  },
+  "voice": {
+    "enabled": true,
+    "engine": "auto",
+    "cosyvoice": {
+      "url": "http://127.0.0.1:50000",
+      "mode": "sft",
+      "spkId": "中文女",
+      "instruct": "",
+      "sampleRate": 22050
+    },
+    "gptsovits": {
+      "url": "http://127.0.0.1:9880",
+      "refAudio": "",
+      "promptText": "",
+      "promptLang": "zh",
+      "textLang": "zh"
+    },
+    "http": {
+      "urlTemplate": ""
+    },
+    "voice": "zh-CN-XiaoyiNeural",
+    "rate": "+0%",
+    "pitch": "+0Hz",
+    "autoChance": 0.15,
+    "autoMaxChars": 80,
+    "asr": true
+  },
+  "stickers": {
+    "enabled": true,
+    "autoChance": 0.45,
+    "collect": true,
+    "fromGroups": true,
+    "fromPrivate": true,
+    "maxPerHour": 60,
+    "maxLibrary": 900,
+    "caption": true
+  },
+  "diary": {
+    "enabled": true,
+    "timesPerDay": 2,
+    "windowStart": "10:00",
+    "windowEnd": "23:30",
+    "minGapMinutes": 180,
+    "minChars": 60,
+    "maxChars": 140,
+    "visibility": "all"
+  },
+  "local": {
+    "tts": false,
+    "image": false,
+    "song": false,
+    "asr": false
+  },
+  "bili": {
+    "enabled": false,
+    "sessdata": "",
+    "biliJct": "",
+    "cookie": "",
+    "autoBrowse": true,
+    "intervalHours": 4,
+    "maxRunsPerDay": 3,
+    "perRun": 3,
+    "keywords": [],
+    "minViews": 5000,
+    "maxAgeDays": 60,
+    "comment": true,
+    "maxCommentsPerDay": 3,
+    "reply": true,
+    "maxRepliesPerDay": 6,
+    "shareToOwner": true,
+    "like": false
+  },
+  "qzoneSocial": {
+    "enabled": false,
+    "replyOwn": true,
+    "commentFriends": true,
+    "friendChance": 0.3,
+    "ownerChance": 0.7,
+    "like": true,
+    "maxPerDay": 8,
+    "intervalMin": 30
+  },
+  "speakUp": {
+    "enabled": true,
+    "idleMinutes": 40,
+    "minIntervalMinutes": 60,
+    "maxIntervalMinutes": 180,
+    "maxPerDay": 4,
+    "nudge": true,
+    "awakeFrom": 8,
+    "awakeTo": 23
+  },
+  "mood": {
+    "enabled": true,
+    "halfLifeHours": 3,
+    "judge": false
+  },
+  "memory": {
+    "enabled": true,
+    "recallCount": 6,
+    "dailyConsolidate": true,
+    "consolidateTimes": [
+      "04:00",
+      "16:00"
+    ]
+  },
+  "song": {
+    "enabled": false,
+    "root": "",
+    "voice": "",
+    "pitch": 0,
+    "neteaseCookie": "",
+    "separatorModel": "model_bs_roformer_ep_317_sdr_12.9755.ckpt",
+    "maxVoiceSec": 120,
+    "clipStart": "auto",
+    "vocalVolume": 1,
+    "instVolume": 0.8,
+    "ownerOnly": true,
+    "keepWork": false,
+    "pypiMirror": "auto"
+  },
+  "tabs": {},
+  "modules": {},
+  "safeMode": false,
+  "ext": {},
+  "bridge": {
+    "dshTools": false,
+    "http": false,
+    "token": "",
+    "allowTargets": "whitelist"
+  }
+}

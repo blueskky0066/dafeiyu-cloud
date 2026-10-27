@@ -1,0 +1,22 @@
+{
+  "name": "dsh-profile-web",
+  "private": true,
+  "dependencies": {
+    "dsh-aurabot-qq": "link:/srv/dsh/plugins/aurabot",
+    "dsh-fish": "link:/srv/dsh/plugins/dsh-fish",
+    "dsh-nekowhale-stickers": "^1.1.0",
+    "heybox": "link:/srv/dsh/plugins/heybox"
+  },
+  "dsh": {
+    "profile": {
+      "bundles": [
+        "@deepseek-ai/dsh-base",
+        "@deepseek-ai/dsh-web-app",
+        "dsh-fish",
+        "heybox",
+        "dsh-aurabot-qq",
+        "dsh-nekowhale-stickers"
+      ]
+    }
+  }
+}

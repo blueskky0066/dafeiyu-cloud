@@ -1,0 +1,22 @@
+# 凭据与登录态，永远不要提交
+auth/
+*.token
+.credentials*
+**/auth.json
+**/auth-cn.json
+**/state.json
+
+# 运行时产物
+node_modules/
+logs/
+*.log
+.aurabot-cache/
+chatlog/
+diary.json
+memories.json
+sessions.json
+stickers-index.json
+
+# 系统
+.DS_Store
+Thumbs.db

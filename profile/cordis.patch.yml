@@ -1,0 +1,106 @@
+# 服务器 profile 的用户层覆盖：把模型接到本机的 wb-proxy
+#   8377 = 国际版（www.workbuddy.ai）
+#   8378 = 国服（www.workbuddy.cn）
+# 两个进程各自持有自己的登录态，互不影响；哪个挂了可以换另一个。
+- id: agent-default-model
+  name: "@deepseek-ai/dsh-agent-default-model"
+  config:
+    provider: workbuddy-intl
+    model: deepseek-v4.1-flash
+
+- id: llm-pi-ai
+  name: "@deepseek-ai/dsh-llm-pi-ai"
+  config:
+    providers:
+      # ---------- 国际版 ----------
+      workbuddy-intl:
+        displayName: WorkBuddy 国际版
+        # wb-proxy 不校验 key，但 provider 需要一个非空引用
+        apiKeyEnv: WB_PROXY_KEY
+        api: openai-completions
+        baseURL: http://127.0.0.1:8377/v1
+        compat:
+          thinkingFormat: deepseek
+        defaultContextWindow: 262144
+        defaultMaxTokens: 32768
+        models:
+          - id: deepseek-v4.1-flash
+            name: DeepSeek V4.1 Flash（国际·免费）
+            contextWindow: 1048576
+            # Aurabot 固定按 low/high 传 reasoning effort；写 false 会
+            # 触发 UNSUPPORTED_REASONING_EFFORT，必须显式声明档位
+            reasoningEfforts:
+              off:
+              low: low
+              high: high
+              max: high
+          - id: hy3
+            name: Hunyuan 3（国际）
+            contextWindow: 262144
+            reasoningEfforts:
+              off:
+              low: low
+              high: high
+              max: high
+          - id: deepseek-v4-pro
+            name: DeepSeek V4 Pro（国际）
+            contextWindow: 262144
+            reasoningEfforts:
+              off:
+              low: low
+              high: high
+              max: high
+
+      # ---------- 国服 ----------
+      workbuddy-cn:
+        displayName: WorkBuddy 国服
+        apiKeyEnv: WB_PROXY_CN_KEY
+        api: openai-completions
+        baseURL: http://127.0.0.1:8378/v1
+        compat:
+          thinkingFormat: deepseek
+        defaultContextWindow: 262144
+        defaultMaxTokens: 32768
+        models:
+          # 国服唯一 x0.00 免费档
+          - id: hy3
+            name: Hunyuan 3（国服·免费）
+            contextWindow: 262144
+            reasoningEfforts:
+              off:
+              low: low
+              high: high
+              max: high
+          # 国服是收费档（x0.11），国际版免费
+          - id: deepseek-v4.1-flash
+            name: DeepSeek V4.1 Flash（国服·收费）
+            contextWindow: 1048576
+            reasoningEfforts:
+              off:
+              low: low
+              high: high
+              max: high
+          - id: deepseek-v4-pro
+            name: DeepSeek V4 Pro（国服）
+            contextWindow: 262144
+            reasoningEfforts:
+              off:
+              low: low
+              high: high
+              max: high
+          - id: glm-5.3
+            name: GLM 5.3（国服）
+            contextWindow: 202144
+            reasoningEfforts:
+              off:
+              low: low
+              high: high
+              max: high
+          - id: kimi-k3.1-pro
+            name: Kimi K3.1 Pro（国服）
+            contextWindow: 262144
+            reasoningEfforts:
+              off:
+              low: low
+              high: high
+              max: high

@@ -1,0 +1,19 @@
+[Unit]
+Description=WorkBuddy -> OpenAI compatible proxy
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/llm-gateway
+ExecStart=/usr/local/bin/node /opt/llm-gateway/wb-proxy.mjs serve --port 8377
+Restart=always
+RestartSec=5
+Environment=PATH=/usr/local/bin:/usr/bin:/bin
+Environment=WB_DEFAULT_MODEL=deepseek-v4.1-flash
+Environment=WB_AUTH_FILE=/opt/llm-gateway/auth/auth.json
+StandardOutput=append:/opt/llm-gateway/logs/proxy.log
+StandardError=append:/opt/llm-gateway/logs/proxy.log
+
+[Install]
+WantedBy=multi-user.target

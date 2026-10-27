@@ -1,0 +1,22 @@
+[Unit]
+Description=DeepSeek Harness web (yangyu)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+Environment=DSH_HOME=/srv/dsh
+Environment=DSH_FISH_FFMPEG=/usr/bin/ffmpeg
+Environment=WB_PROXY_KEY=local-no-auth
+Environment=WB_PROXY_CN_KEY=local-no-auth
+Environment=TZ=Asia/Shanghai
+Environment=PATH=/usr/local/nodejs22/bin:/usr/local/bin:/usr/bin:/bin
+WorkingDirectory=/srv/dsh
+ExecStart=/usr/local/nodejs22/bin/node /opt/dsh-runtime/node_modules/@deepseek-ai/dsh/lib/bin.js web --host 127.0.0.1 --port 63482 --no-open
+Restart=always
+RestartSec=5
+StandardOutput=append:/srv/dsh/logs/web.log
+StandardError=append:/srv/dsh/logs/web.err.log
+
+[Install]
+WantedBy=multi-user.target

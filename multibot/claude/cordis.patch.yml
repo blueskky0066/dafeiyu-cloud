@@ -1,0 +1,25 @@
+- id: agent-default-model
+  name: "@deepseek-ai/dsh-agent-default-model"
+  config:
+    provider: claude-gateway
+    model: claude-sonnet-5-5
+- id: llm-pi-ai
+  name: "@deepseek-ai/dsh-llm-pi-ai"
+  config:
+    providers:
+      claude-gateway:
+        displayName: Claude (1pkapi)
+        apiKeyEnv: CLAUDE_PROXY_KEY
+        # Anthropic 原生协议；1pkapi 支持 /v1/messages
+        api: anthropic-messages
+        baseURL: https://1pkapi.com
+        defaultContextWindow: 1000000
+        defaultMaxTokens: 128000
+        models:
+          - id: claude-sonnet-5-5
+            name: Claude Sonnet
+            contextWindow: 1000000
+            # 1pkapi 的 sonnet-5-5 要求 thinking.type=adaptive；
+            # pi-ai 不会生成这个值，所以整段 reasoningEfforts 不写，
+            # 让它默认不带 thinking 参数，由服务端决定。
+            reasoningEfforts: false

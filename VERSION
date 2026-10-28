@@ -26,3 +26,8 @@ NapCat          4.18.41
 
 补充:
 - gateway/wb-proxy.mjs   WorkBuddy → OpenAI 兼容代理（1878 行，79K）
+
+2026-10-28 更新:
+- 新增 multibot/  三个 AI 的完整配置（大肥鱼 / 克小姐 / 星喵）
+- 新增 docs/CLAUDE-BOT-SETUP.md  Claude 中转站接入的四个坑
+- 克小姐改用 1pkapi（Anthropic 原生协议），原 cpa OAuth 方案已废弃

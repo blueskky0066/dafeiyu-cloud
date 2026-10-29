@@ -1,0 +1,41 @@
+[Unit]
+Description=Cohabit AI Character Console
+After=network.target dsh-web.service
+
+[Service]
+Type=simple
+User=cohabit-console
+Group=cohabit-console
+WorkingDirectory=/opt/cohabit-console/current
+ExecStart=/usr/local/node22bin/node server.mjs
+Environment=NODE_ENV=production
+Environment=HOST=127.0.0.1
+Environment=PORT=6380
+Environment=CONSOLE_DATA_DIR=/var/lib/cohabit-console
+Environment=DSH_BASE_URL=http://127.0.0.1:63482
+Environment=BOT_DATA_DIR=/run/cohabit-console/bot-data
+Environment=NAPCAT_WEBUI_URL=http://127.0.0.1:6099
+LoadCredential=napcat-webui:/srv/dsh/napcat/data/config/webui.json
+LoadCredential=claude-napcat-webui:/srv/claude-qqbot/napcat/config/webui.json
+LoadCredential=gemini-napcat-webui:/srv/gemini-qqbot/napcat/config/webui.json
+RuntimeDirectory=cohabit-console
+RuntimeDirectoryMode=0750
+BindReadOnlyPaths=/srv/dsh/plugins-data/aurabot/chatlog:/run/cohabit-console/bot-data/chatlog
+BindReadOnlyPaths=/srv/claude-qqbot/plugins-data/aurabot/chatlog:/run/cohabit-console/claude-bot-data/chatlog
+BindReadOnlyPaths=/srv/gemini-qqbot/plugins-data/aurabot/chatlog:/run/cohabit-console/gemini-bot-data/chatlog
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/cohabit-console
+ProtectKernelTunables=true
+ProtectKernelModules=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+RestrictAddressFamilies=AF_INET AF_INET6 AF_UNIX
+UMask=0077
+
+[Install]
+WantedBy=multi-user.target

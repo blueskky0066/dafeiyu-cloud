@@ -1,0 +1,77 @@
+import tempfile,subprocess,time,json,shutil,urllib.request
+from pathlib import Path
+from playwright.sync_api import sync_playwright,expect
+root=Path(__file__).resolve().parents[1]
+temp=tempfile.mkdtemp(prefix='cohabit-browser-')
+script="import {createApp} from './server.mjs'; const app=createApp({dataDir:process.env.QA_DATA,password:'browser-test-only-12345',dsh:{state:async()=>({status:'offline',source:'unavailable',error:'测试环境未连接远端运行系统'})}}); app.server.listen(6381,'127.0.0.1');process.on('SIGTERM',async()=>{await app.close();process.exit(0)});"
+import os
+proc=subprocess.Popen(['node','--input-type=module','-e',script],cwd=root,env={**os.environ,'QA_DATA':temp},stdout=subprocess.DEVNULL,stderr=subprocess.PIPE)
+errors=[]
+try:
+ for _ in range(50):
+  try: urllib.request.urlopen('http://127.0.0.1:6381/api/health',timeout=1);break
+  except Exception: time.sleep(.1)
+ with sync_playwright() as p:
+  browser=p.chromium.launch(headless=True)
+  page=browser.new_page(viewport={'width':1440,'height':1100},device_scale_factor=1)
+  page.on('pageerror',lambda err:errors.append(str(err)))
+  page.on('console',lambda msg:errors.append(msg.text) if msg.type=='error' else None)
+  page.goto('http://127.0.0.1:6381')
+  page.get_by_label('管理密码',exact=True).fill('browser-test-only-12345')
+  page.get_by_role('button',name='进入工作台').click()
+  expect(page.get_by_role('heading',name='每个 AI，都有自己的世界')).to_be_visible()
+  expect(page.locator('.character-card')).to_have_count(4)
+  screenshot=root/'test-results';screenshot.mkdir(exist_ok=True)
+  page.screenshot(path=str(screenshot/'overview-desktop.png'),full_page=True)
+  page.get_by_role('button',name='添加角色').click()
+  page.get_by_label('角色名称').fill('测试独立角色')
+  page.get_by_label('模型服务').select_option('claude')
+  page.get_by_role('button',name='创建角色空间').click()
+  expect(page.get_by_role('heading',name='测试独立角色')).to_be_visible()
+  page.get_by_label('一句话介绍').fill('浏览器验证专用')
+  page.get_by_label('模型名称').fill('test-model')
+  page.get_by_role('button',name='保存配置',exact=True).click()
+  expect(page.locator('.tag')).to_contain_text('配置 v2')
+  page.get_by_role('link',name='人格',exact=True).click()
+  page.get_by_label('人格内容').fill('我是一个独立的测试角色')
+  page.get_by_role('button',name='保存人格').click()
+  page.get_by_role('button',name='确认保存').click()
+  expect(page.get_by_label('人格内容')).to_have_value('我是一个独立的测试角色')
+  page.get_by_role('link',name='记忆',exact=True).click()
+  page.get_by_role('button',name='添加记忆').click()
+  page.get_by_label('值得记住的事').fill('专属于这个测试角色的记忆')
+  page.get_by_role('button',name='保存记忆').click()
+  expect(page.locator('.memory-card')).to_have_count(1)
+  page.get_by_role('link',name='记忆档案',exact=True).click()
+  page.locator('.character-card').filter(has=page.get_by_role('link',name='Grok',exact=True)).get_by_role('link',name='进入空间').click()
+  expect(page.locator('.empty')).to_contain_text('还没有记忆')
+  page.get_by_role('link',name='对话',exact=True).click()
+  page.get_by_label('对话模式').select_option('sandbox')
+  expect(page.get_by_label('试聊消息')).to_be_visible()
+  page.get_by_label('对话模式').select_option('logs')
+  expect(page.get_by_label('试聊消息')).to_be_hidden()
+  page.get_by_role('link',name='总览',exact=True).click()
+  page.get_by_role('button',name='运行中',exact=True).click()
+  expect(page.get_by_text('当前分类下还没有角色',exact=True)).to_be_visible()
+  page.get_by_role('button',name='全部',exact=True).click()
+  expect(page.locator('.character-card')).to_have_count(5)
+  page.get_by_role('link',name='系统设置',exact=True).click()
+  expect(page.get_by_role('heading',name='修改管理密码')).to_be_visible()
+  page.set_viewport_size({'width':390,'height':844})
+  page.get_by_role('button',name='打开导航').click()
+  page.get_by_role('link',name='总览',exact=True).click()
+  expect(page.get_by_role('heading',name='每个 AI，都有自己的世界')).to_be_visible()
+  assert page.evaluate('document.documentElement.scrollWidth<=window.innerWidth'), 'mobile overflow'
+  expect(page.locator('.toast')).to_have_count(0,timeout=6000)
+  page.screenshot(path=str(screenshot/'overview-mobile.png'),full_page=True)
+  page.get_by_role('button',name='打开导航').click()
+  page.get_by_role('button',name='退出登录').click()
+  expect(page.get_by_role('heading',name='欢迎回来')).to_be_visible()
+  assert not errors,errors
+  print(json.dumps({'passed':True,'checks':['login','overview','create role','save configuration','persona diff and save','add memory','cross-role isolation','conversation mode','filter','settings','mobile layout','logout'],'consoleErrors':errors},ensure_ascii=False))
+  browser.close()
+finally:
+ proc.terminate()
+ try:proc.wait(timeout=5)
+ except subprocess.TimeoutExpired:proc.kill()
+ shutil.rmtree(temp,ignore_errors=True)

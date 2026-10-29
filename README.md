@@ -1,5 +1,18 @@
 # 大肥鱼 · 云端部署包（2026-10-27 最新版）
 
+## 2026-10-29：角色工作台与语境学习
+
+新增共栖管理工作台 0.4.1，支持独立角色、人格和模型管理、QQ 状态、世界设定，以及逐句/表情注释与表达候选确认。源码及运行说明见 [ai-character-console](ai-character-console/README.md)。
+
+- [social-learning](social-learning/README.md)：按消息、聊天或角色范围召回人工解释；观察表达节奏，新说法需确认后使用。
+- [claude-world](claude-world/README.md)：角色卡、世界书与会话状态。
+- [dafeiyu-social-understanding](dafeiyu-social-understanding/README.md)：群聊语用分析、诊断及人工解释接入。
+- [dafeiyu-recovery](dafeiyu-recovery/README.md)：OneBot、模型兼容及来源消息编号补丁。
+- [claude-light-work](claude-light-work/README.md)、gemini-light-work：文件读取和轻工作模块。
+- [gemini-gateway](gemini-gateway/README.md)：独立 Gemini CLI 文本网关。
+
+本次只提交源码、测试和部署模板，不包含密钥、QQ/Google 登录态、聊天日志、长期记忆、管理数据库或服务器快照。原有部署包和配置保留；新增模块不会由 Git 提交自动安装。语境学习模块及消息来源补丁的部署说明见对应目录 README。
+
 一台 Linux 云服务器上跑完整套：**QQ 聊天 + 刷小黑盒 + 刷 B 站 + 表情包 + 记忆**。
 
 ## 这套东西是什么

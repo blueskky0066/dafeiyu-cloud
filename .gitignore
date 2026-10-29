@@ -20,3 +20,22 @@ stickers-index.json
 # 系统
 .DS_Store
 Thumbs.db
+
+# 本地快照、私有运行数据与评审材料
+/server-snapshot/
+/dafeiyu-docs/
+/fish-pkg-review/
+/ai-character-console/scripts/access.sh
+/ai-character-console/scripts/install-access-agent.py
+**/.data/
+**/test-results/
+**/__pycache__/
+*.pyc
+*.sqlite*
+*.db
+*.key
+*.pem
+.env
+.env.*
+!.env.example
+*.tar.gz

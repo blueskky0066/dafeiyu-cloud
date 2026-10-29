@@ -1,0 +1,23 @@
+[Unit]
+Description=Gemini subscription adapter via official Antigravity CLI
+After=network-online.target
+Wants=network-online.target
+[Service]
+User=gemini-gateway
+Group=gemini-gateway
+WorkingDirectory=/srv/gemini-gateway/work
+Environment=HOME=/srv/gemini-gateway
+Environment=PATH=/usr/local/node22bin:/usr/local/bin:/usr/bin:/bin
+ExecStart=/usr/local/node22bin/node /opt/gemini-gateway/server.mjs
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/srv/gemini-gateway
+UMask=0077
+MemoryMax=700M
+MemorySwapMax=700M
+[Install]
+WantedBy=multi-user.target

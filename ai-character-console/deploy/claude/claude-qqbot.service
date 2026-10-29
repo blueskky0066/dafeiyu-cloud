@@ -1,0 +1,27 @@
+[Unit]
+Description=Claude QQ Bot - isolated Sonnet runtime
+After=network-online.target docker.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=claude-qqbot
+Group=claude-qqbot
+WorkingDirectory=/srv/claude-qqbot
+Environment=DSH_HOME=/srv/claude-qqbot
+Environment=TZ=Asia/Shanghai
+Environment=PATH=/usr/local/nodejs22/bin:/usr/local/bin:/usr/bin:/bin
+EnvironmentFile=/srv/claude-qqbot/credentials/model.env
+ExecStart=/usr/local/nodejs22/bin/node /opt/dsh-runtime/node_modules/@deepseek-ai/dsh/lib/bin.js web --host 127.0.0.1 --port 63483 --no-open
+BindReadOnlyPaths=/srv/dsh/plugins/aurabot:/srv/claude-qqbot/plugins/aurabot
+Restart=on-failure
+RestartSec=5
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/srv/claude-qqbot
+UMask=0027
+
+[Install]
+WantedBy=multi-user.target
